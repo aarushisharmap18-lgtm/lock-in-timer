@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Minimal Pomodoro</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Lock In 🥰</h1>
+
+<div class="custom-times">
+
+<input id="focusInput" type="number" placeholder="focus (min)" min="1">
+<input id="breakInput" type="number" placeholder="break (min)" min="1">
+
+<button id="setTimes">Set</button>
+
+</div>
+
+<div class="timer">
+
+<svg class="progress-ring" width="220" height="220">
+
+<circle
+class="progress-ring-bg"
+cx="110"
+cy="110"
+r="100"
+stroke-width="8"
+/>
+
+<circle
+class="progress-ring-circle"
+cx="110"
+cy="110"
+r="100"
+stroke-width="8"
+/>
+
+</svg>
+
+<div class="time" id="time">25:00</div>
+
+</div>
+
+<div class="buttons">
+
+<button id="start">Start</button>
+<button id="reset">Reset</button>
+<button id="break">Break</button>
+<button id="mode">🌙</button>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
