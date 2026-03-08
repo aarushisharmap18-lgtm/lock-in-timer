@@ -1,17 +1,13 @@
 :root{
-
 --bg:#f7f7f7;
 --text:#222;
 --accent:#7BAE7F;
-
 }
 
 body.dark{
-
 --bg:#111;
 --text:#eee;
 --accent:#6EDC9F;
-
 }
 
 body{
@@ -32,30 +28,22 @@ transition:0.3s;
 }
 
 .container{
-
 text-align:center;
-
 }
 
 h1{
-
-margin-bottom:20px;
 font-weight:500;
-
+margin-bottom:20px;
 }
 
 .custom-times{
-
 margin-bottom:20px;
-
 }
 
 .custom-times input{
 
 width:100px;
-
 padding:8px;
-
 margin:4px;
 
 border-radius:10px;
@@ -68,7 +56,6 @@ text-align:center;
 .timer{
 
 position:relative;
-
 width:220px;
 height:220px;
 
@@ -78,16 +65,12 @@ margin-bottom:20px;
 }
 
 .progress-ring{
-
 transform:rotate(-90deg);
-
 }
 
 .progress-ring-bg{
-
 fill:none;
 stroke:#ddd;
-
 }
 
 .progress-ring-circle{
@@ -118,7 +101,6 @@ font-weight:600;
 button{
 
 margin:8px;
-
 padding:10px 18px;
 
 border:none;
@@ -137,7 +119,5 @@ transition:0.2s;
 }
 
 button:hover{
-
 transform:scale(1.05);
-
 }
