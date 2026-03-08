@@ -2,7 +2,6 @@ let focusTime = 1500
 let breakTime = 300
 
 let time = focusTime
-
 let interval = null
 let mode = "focus"
 
@@ -61,14 +60,12 @@ if(mode === "focus"){
 
 mode = "break"
 time = breakTime
-
 alert("Break time!")
 
 }else{
 
 mode = "focus"
 time = focusTime
-
 alert("Focus time!")
 
 }
@@ -115,15 +112,11 @@ let focus = document.getElementById("focusInput").value
 let br = document.getElementById("breakInput").value
 
 if(focus > 0){
-
 focusTime = focus * 60
-
 }
 
 if(br > 0){
-
 breakTime = br * 60
-
 }
 
 mode = "focus"
@@ -135,13 +128,15 @@ setProgress(0)
 }
 
 document.getElementById("mode").onclick = ()=>{
-
 document.body.classList.toggle("dark")
-
 }
 
-
 updateTimer()
+
+/* REGISTER SERVICE WORKER */
+
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
+
+navigator.serviceWorker.register("sw.js")
+
 }
