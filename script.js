@@ -140,4 +140,8 @@ document.body.classList.toggle("dark")
 
 }
 
+
 updateTimer()
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
