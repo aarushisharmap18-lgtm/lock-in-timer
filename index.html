@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -22,33 +21,17 @@
 <h1>Lock In 🥰</h1>
 
 <div class="custom-times">
-
 <input id="focusInput" type="number" placeholder="focus (min)" min="1">
 <input id="breakInput" type="number" placeholder="break (min)" min="1">
-
 <button id="setTimes">Set</button>
-
 </div>
 
 <div class="timer">
 
 <svg class="progress-ring" width="220" height="220">
 
-<circle
-class="progress-ring-bg"
-cx="110"
-cy="110"
-r="100"
-stroke-width="8"
-/>
-
-<circle
-class="progress-ring-circle"
-cx="110"
-cy="110"
-r="100"
-stroke-width="8"
-/>
+<circle class="progress-ring-bg" cx="110" cy="110" r="100" stroke-width="8"/>
+<circle class="progress-ring-circle" cx="110" cy="110" r="100" stroke-width="8"/>
 
 </svg>
 
@@ -59,9 +42,24 @@ stroke-width="8"
 <div class="buttons">
 
 <button id="start">Start</button>
+<button id="pause">Pause</button>
 <button id="reset">Reset</button>
 <button id="break">Break</button>
+<button id="todoToggle">Todo</button>
 <button id="mode">🌙</button>
+
+</div>
+
+<div id="todoPanel" class="todo-panel">
+
+<h3>Tasks</h3>
+
+<div class="todo-input">
+<input id="todoText" placeholder="new task...">
+<button id="addTodo">Add</button>
+</div>
+
+<ul id="todoList"></ul>
 
 </div>
 
