@@ -11,29 +11,19 @@ body.dark{
 }
 
 body{
-
 background:var(--bg);
 color:var(--text);
 font-family:sans-serif;
-
 display:flex;
 justify-content:center;
 align-items:center;
-
 height:100vh;
 margin:0;
-
 transition:0.3s;
-
 }
 
 .container{
 text-align:center;
-}
-
-h1{
-font-weight:500;
-margin-bottom:20px;
 }
 
 .custom-times{
@@ -41,27 +31,20 @@ margin-bottom:20px;
 }
 
 .custom-times input{
-
 width:100px;
 padding:8px;
 margin:4px;
-
 border-radius:10px;
 border:1px solid #ccc;
-
 text-align:center;
-
 }
 
 .timer{
-
 position:relative;
 width:220px;
 height:220px;
-
 margin:auto;
 margin-bottom:20px;
-
 }
 
 .progress-ring{
@@ -74,50 +57,75 @@ stroke:#ddd;
 }
 
 .progress-ring-circle{
-
 fill:none;
 stroke:var(--accent);
-
 stroke-linecap:round;
-
 transition:stroke-dashoffset 1s linear;
-
 }
 
 .time{
-
 position:absolute;
-
 top:50%;
 left:50%;
-
 transform:translate(-50%,-50%);
-
 font-size:36px;
 font-weight:600;
-
 }
 
 button{
-
-margin:8px;
-padding:10px 18px;
-
+margin:6px;
+padding:10px 16px;
 border:none;
-
 border-radius:30px;
-
 background:var(--accent);
 color:white;
-
 cursor:pointer;
-
-font-size:14px;
-
-transition:0.2s;
-
 }
 
 button:hover{
 transform:scale(1.05);
+}
+
+/* TODO PANEL */
+
+.todo-panel{
+display:none;
+margin-top:20px;
+width:250px;
+margin-left:auto;
+margin-right:auto;
+}
+
+.todo-panel.open{
+display:block;
+}
+
+.todo-input{
+display:flex;
+gap:5px;
+margin-bottom:10px;
+}
+
+.todo-input input{
+flex:1;
+padding:6px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+ul{
+list-style:none;
+padding:0;
+}
+
+li{
+display:flex;
+align-items:center;
+gap:8px;
+margin:6px 0;
+}
+
+.completed{
+text-decoration:line-through;
+opacity:0.6;
 }
