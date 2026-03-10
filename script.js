@@ -1,5 +1,6 @@
 let focusTime = 1500
 let breakTime = 300
+
 let time = focusTime
 let mode = "focus"
 let interval = null
@@ -20,8 +21,7 @@ circle.style.strokeDasharray = circumference
 circle.style.strokeDashoffset = circumference
 
 function setProgress(percent){
-const offset = circumference - percent * circumference
-circle.style.strokeDashoffset = offset
+circle.style.strokeDashoffset = circumference - percent * circumference
 }
 
 function updateTimer(){
@@ -33,10 +33,11 @@ timeDisplay.textContent =
 `${minutes}:${seconds.toString().padStart(2,"0")}`
 
 let total = mode === "focus" ? focusTime : breakTime
-
 setProgress(1 - time/total)
 
 }
+
+/* TIMER */
 
 function startTimer(){
 
@@ -136,23 +137,23 @@ document.getElementById("addTodo").onclick=()=>{
 let text=document.getElementById("todoText").value
 if(!text) return
 
-let li = document.createElement("li")
+let li=document.createElement("li")
 
-let box = document.createElement("input")
-box.type = "checkbox"
+let box=document.createElement("input")
+box.type="checkbox"
 
-let span = document.createElement("span")
-span.textContent = text
+let span=document.createElement("span")
+span.textContent=text
 
-let del = document.createElement("button")
-del.textContent = "✖"
-del.className = "delete"
+let del=document.createElement("button")
+del.textContent="✖"
+del.className="delete"
 
-box.onchange = () => {
+box.onchange=()=>{
 span.classList.toggle("completed")
 }
 
-del.onclick = () => {
+del.onclick=()=>{
 li.remove()
 }
 
@@ -161,60 +162,51 @@ li.appendChild(span)
 li.appendChild(del)
 
 list.appendChild(li)
-box.onchange=()=>{
-span.classList.toggle("completed")
-}
-
-li.appendChild(box)
-li.appendChild(span)
-
-list.appendChild(li)
 
 document.getElementById("todoText").value=""
 
 }
 
-/* WORKING PICTURE IN PICTURE */
-
-const pipButton = document.getElementById("pip")
+/* WORKING FLOATING TIMER (PIP STYLE) */
 
 let pipWindow = null
 
-pipButton.onclick = async () => {
+document.getElementById("pip").onclick = () => {
 
-if (!("documentPictureInPicture" in window)) {
-alert("Picture-in-Picture not supported in this browser")
-return
-}
-
-if (pipWindow) {
+if(pipWindow && !pipWindow.closed){
 pipWindow.close()
-pipWindow = null
+pipWindow=null
 return
 }
 
-pipWindow = await window.documentPictureInPicture.requestWindow({
-width:200,
-height:120
-})
+pipWindow = window.open(
+"",
+"Timer",
+"width=200,height=120,alwaysRaised=yes"
+)
 
-const pipTimer = pipWindow.document.createElement("div")
+pipWindow.document.body.style.margin="0"
+pipWindow.document.body.style.display="flex"
+pipWindow.document.body.style.alignItems="center"
+pipWindow.document.body.style.justifyContent="center"
+pipWindow.document.body.style.fontSize="30px"
+pipWindow.document.body.style.fontFamily="sans-serif"
 
-pipTimer.style.display = "flex"
-pipTimer.style.alignItems = "center"
-pipTimer.style.justifyContent = "center"
-pipTimer.style.height = "100%"
-pipTimer.style.fontSize = "32px"
-pipTimer.style.fontFamily = "sans-serif"
+const timerText = pipWindow.document.createElement("div")
+timerText.innerText = timeDisplay.textContent
 
-pipTimer.textContent = timeDisplay.textContent
-
-pipWindow.document.body.appendChild(pipTimer)
+pipWindow.document.body.appendChild(timerText)
 
 setInterval(()=>{
-if(pipWindow){
-pipTimer.textContent = timeDisplay.textContent
+if(pipWindow && !pipWindow.closed){
+timerText.innerText = timeDisplay.textContent
 }
 },500)
 
+}
+
+/* SERVICE WORKER */
+
+if("serviceWorker" in navigator){
+navigator.serviceWorker.register("sw.js")
 }
