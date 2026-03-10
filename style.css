@@ -30,7 +30,6 @@ position:absolute;
 top:20px;
 right:25px;
 font-size:14px;
-opacity:0.8;
 }
 
 .timer{
@@ -89,23 +88,29 @@ display:block;
 text-decoration:line-through;
 opacity:0.6;
 }
-.pip-btn{
 
+.delete{
+background:none;
+border:none;
+cursor:pointer;
+color:#999;
+margin-left:10px;
+}
+
+.delete:hover{
+color:red;
+}
+
+/* PIP BUTTON */
+
+.pip-btn{
 position:fixed;
 bottom:20px;
 left:20px;
-
 padding:10px 16px;
-
-border:none;
 border-radius:30px;
-
 background:var(--accent);
 color:white;
-
+border:none;
 cursor:pointer;
-
-z-index:1000;
-
 }
-
