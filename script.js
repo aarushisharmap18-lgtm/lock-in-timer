@@ -30,7 +30,7 @@ function setProgress(percent){
 circle.style.strokeDashoffset = circumference - percent * circumference
 }
 
-/* ---------------- TIMER DISPLAY ---------------- */
+/* ---------------- UPDATE TIMER ---------------- */
 
 function updateTimer(){
 
@@ -41,7 +41,6 @@ timeDisplay.textContent =
 `${minutes}:${seconds.toString().padStart(2,"0")}`
 
 let total = mode === "focus" ? focusTime : breakTime
-
 setProgress(1 - time/total)
 
 }
@@ -89,7 +88,7 @@ updateTimer()
 
 }
 
-/* ---------------- BUTTON CONTROLS ---------------- */
+/* ---------------- BUTTONS ---------------- */
 
 document.getElementById("start").onclick = startTimer
 
@@ -137,8 +136,6 @@ document.getElementById("mode").onclick = ()=>{
 document.body.classList.toggle("dark")
 }
 
-updateTimer()
-
 /* ---------------- TODO LIST ---------------- */
 
 const panel = document.getElementById("todoPanel")
@@ -183,11 +180,11 @@ document.getElementById("todoText").value = ""
 
 }
 
-/* ---------------- FLOATING TIMER WINDOW ---------------- */
+/* ---------------- PIP FLOATING WINDOW ---------------- */
 
 let pipWindow = null
 
-document.getElementById("pip").onclick = () => {
+document.getElementById("pip").onclick = ()=>{
 
 if(pipWindow && !pipWindow.closed){
 pipWindow.close()
@@ -195,84 +192,40 @@ pipWindow = null
 return
 }
 
-pipWindow = window.open("", "Timer", "width=220,height=170")
+pipWindow = window.open("", "Timer", "width=220,height=160")
 
-pipWindow.document.write(`
-<html>
-<head>
-<title>Timer</title>
-
-<style>
-
-body{
-margin:0;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-height:100vh;
-font-family:sans-serif;
-background:#111;
-color:white;
-}
-
-#pipTime{
-font-size:32px;
-margin-bottom:10px;
-}
-
-button{
-margin:5px;
-padding:6px 10px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div id="pipTime">--:--</div>
-
+pipWindow.document.body.innerHTML = `
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;font-family:sans-serif;background:#111;color:white;">
+<div id="pipTime" style="font-size:32px;margin-bottom:10px;">${timeDisplay.textContent}</div>
 <div>
-<button id="pipStart">Start</button>
-<button id="pipPause">Pause</button>
+<button onclick="window.opener.startTimer()">Start</button>
+<button onclick="window.opener.pauseTimer()">Pause</button>
 </div>
+</div>
+`
 
-</body>
-</html>
-`)
-
-const pipDoc = pipWindow.document
-
-const pipTime = pipDoc.getElementById("pipTime")
-const pipStart = pipDoc.getElementById("pipStart")
-const pipPause = pipDoc.getElementById("pipPause")
-
-pipStart.onclick = ()=>{
-startTimer()
 }
 
-pipPause.onclick = ()=>{
+/* pause function for pip */
+
+function pauseTimer(){
 clearInterval(interval)
 interval = null
 }
 
+window.startTimer = startTimer
+window.pauseTimer = pauseTimer
+
+/* update pip timer */
+
 setInterval(()=>{
 
 if(pipWindow && !pipWindow.closed){
-pipTime.innerText = timeDisplay.textContent
+pipWindow.document.getElementById("pipTime").innerText = timeDisplay.textContent
 }
 
 },500)
 
-}
+/* ---------------- INIT ---------------- */
 
-/* ---------------- SERVICE WORKER ---------------- */
-
-if("serviceWorker" in navigator){
-navigator.serviceWorker.register("sw.js")
-}
+updateTimer()
