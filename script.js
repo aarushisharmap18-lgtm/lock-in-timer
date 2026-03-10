@@ -182,34 +182,91 @@ document.getElementById("todoText").value = ""
 
 }
 
-/* FLOATING TIMER WINDOW (PIP STYLE) */
+/* FLOATING TIMER WINDOW WITH CONTROLS */
 
 let pipWindow = null
 
 document.getElementById("pip").onclick = () => {
 
-if(pipWindow && !pipWindow.closed){
+if (pipWindow && !pipWindow.closed) {
 pipWindow.close()
 pipWindow = null
 return
 }
 
-pipWindow = window.open(
-"",
-"Timer",
-"width=220,height=160"
-)
+pipWindow = window.open("", "Timer", "width=220,height=170")
 
-const doc = pipWindow.document
+pipWindow.document.write(`
+<html>
+<head>
+<title>Timer</title>
+<style>
+body{
+margin:0;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+height:100vh;
+font-family:sans-serif;
+background:#111;
+color:white;
+}
+#pipTime{
+font-size:32px;
+margin-bottom:10px;
+}
+button{
+margin:5px;
+padding:6px 10px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+</style>
+</head>
 
-doc.body.style.margin="0"
-doc.body.style.display="flex"
-doc.body.style.flexDirection="column"
-doc.body.style.alignItems="center"
-doc.body.style.justifyContent="center"
-doc.body.style.fontFamily="sans-serif"
-doc.body.style.background="#111"
-doc.body.style.color="#fff"
+<body>
+
+<div id="pipTime">--:--</div>
+
+<div>
+<button id="pipStart">Start</button>
+<button id="pipPause">Pause</button>
+</div>
+
+</body>
+</html>
+`)
+
+const pipDoc = pipWindow.document
+
+const pipTime = pipDoc.getElementById("pipTime")
+const pipStart = pipDoc.getElementById("pipStart")
+const pipPause = pipDoc.getElementById("pipPause")
+
+/* connect buttons */
+
+pipStart.onclick = () => {
+startTimer()
+}
+
+pipPause.onclick = () => {
+clearInterval(interval)
+interval = null
+}
+
+/* live timer update */
+
+setInterval(()=>{
+
+if(pipWindow && !pipWindow.closed){
+pipTime.innerText = timeDisplay.textContent
+}
+
+},500)
+
+}
 
 /* TIMER TEXT */
 
@@ -270,3 +327,4 @@ timerText.innerText = timeDisplay.textContent
 if("serviceWorker" in navigator){
 navigator.serviceWorker.register("sw.js")
 }
+
