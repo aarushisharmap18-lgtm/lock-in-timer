@@ -1,4 +1,4 @@
-/* TIMER VARIABLES */
+/* ---------------- TIMER VARIABLES ---------------- */
 
 let focusTime = 1500
 let breakTime = 300
@@ -12,13 +12,13 @@ const bell = new Audio("bell.mpeg")
 const timeDisplay = document.getElementById("time")
 const circle = document.querySelector(".progress-ring-circle")
 
-/* SESSION COUNTER */
+/* ---------------- SESSION COUNTER ---------------- */
 
 let sessionCount = localStorage.getItem("sessions") || 0
 const sessionDisplay = document.getElementById("sessionCount")
 sessionDisplay.textContent = sessionCount
 
-/* PROGRESS RING SETUP */
+/* ---------------- PROGRESS RING ---------------- */
 
 const radius = 100
 const circumference = 2 * Math.PI * radius
@@ -30,7 +30,7 @@ function setProgress(percent){
 circle.style.strokeDashoffset = circumference - percent * circumference
 }
 
-/* UPDATE TIMER DISPLAY */
+/* ---------------- TIMER DISPLAY ---------------- */
 
 function updateTimer(){
 
@@ -41,11 +41,12 @@ timeDisplay.textContent =
 `${minutes}:${seconds.toString().padStart(2,"0")}`
 
 let total = mode === "focus" ? focusTime : breakTime
+
 setProgress(1 - time/total)
 
 }
 
-/* START TIMER */
+/* ---------------- START TIMER ---------------- */
 
 function startTimer(){
 
@@ -88,7 +89,7 @@ updateTimer()
 
 }
 
-/* BUTTON CONTROLS */
+/* ---------------- BUTTON CONTROLS ---------------- */
 
 document.getElementById("start").onclick = startTimer
 
@@ -113,7 +114,7 @@ time = breakTime
 updateTimer()
 }
 
-/* CUSTOM TIMES */
+/* ---------------- CUSTOM TIMES ---------------- */
 
 document.getElementById("setTimes").onclick = ()=>{
 
@@ -130,7 +131,7 @@ updateTimer()
 
 }
 
-/* DARK MODE */
+/* ---------------- DARK MODE ---------------- */
 
 document.getElementById("mode").onclick = ()=>{
 document.body.classList.toggle("dark")
@@ -138,7 +139,7 @@ document.body.classList.toggle("dark")
 
 updateTimer()
 
-/* TODO LIST */
+/* ---------------- TODO LIST ---------------- */
 
 const panel = document.getElementById("todoPanel")
 const list = document.getElementById("todoList")
@@ -182,13 +183,13 @@ document.getElementById("todoText").value = ""
 
 }
 
-/* FLOATING TIMER WINDOW WITH CONTROLS */
+/* ---------------- FLOATING TIMER WINDOW ---------------- */
 
 let pipWindow = null
 
 document.getElementById("pip").onclick = () => {
 
-if (pipWindow && !pipWindow.closed) {
+if(pipWindow && !pipWindow.closed){
 pipWindow.close()
 pipWindow = null
 return
@@ -200,7 +201,9 @@ pipWindow.document.write(`
 <html>
 <head>
 <title>Timer</title>
+
 <style>
+
 body{
 margin:0;
 display:flex;
@@ -212,10 +215,12 @@ font-family:sans-serif;
 background:#111;
 color:white;
 }
+
 #pipTime{
 font-size:32px;
 margin-bottom:10px;
 }
+
 button{
 margin:5px;
 padding:6px 10px;
@@ -223,7 +228,9 @@ border:none;
 border-radius:6px;
 cursor:pointer;
 }
+
 </style>
+
 </head>
 
 <body>
@@ -245,18 +252,14 @@ const pipTime = pipDoc.getElementById("pipTime")
 const pipStart = pipDoc.getElementById("pipStart")
 const pipPause = pipDoc.getElementById("pipPause")
 
-/* connect buttons */
-
-pipStart.onclick = () => {
+pipStart.onclick = ()=>{
 startTimer()
 }
 
-pipPause.onclick = () => {
+pipPause.onclick = ()=>{
 clearInterval(interval)
 interval = null
 }
-
-/* live timer update */
 
 setInterval(()=>{
 
@@ -268,63 +271,8 @@ pipTime.innerText = timeDisplay.textContent
 
 }
 
-/* TIMER TEXT */
-
-const timerText = doc.createElement("div")
-timerText.style.fontSize="32px"
-timerText.style.marginBottom="10px"
-timerText.innerText = timeDisplay.textContent
-
-doc.body.appendChild(timerText)
-
-/* CONTROLS */
-
-const controls = doc.createElement("div")
-controls.style.display="flex"
-controls.style.gap="10px"
-
-doc.body.appendChild(controls)
-
-/* START BUTTON */
-
-const startBtn = doc.createElement("button")
-startBtn.innerText = "Start"
-startBtn.style.padding="6px 10px"
-
-startBtn.onclick = ()=>{
-startTimer()
-}
-
-controls.appendChild(startBtn)
-
-/* PAUSE BUTTON */
-
-const pauseBtn = doc.createElement("button")
-pauseBtn.innerText = "Pause"
-pauseBtn.style.padding="6px 10px"
-
-pauseBtn.onclick = ()=>{
-clearInterval(interval)
-interval = null
-}
-
-controls.appendChild(pauseBtn)
-
-/* LIVE TIMER UPDATE */
-
-setInterval(()=>{
-
-if(pipWindow && !pipWindow.closed){
-timerText.innerText = timeDisplay.textContent
-}
-
-},500)
-
-}
-
-/* SERVICE WORKER */
+/* ---------------- SERVICE WORKER ---------------- */
 
 if("serviceWorker" in navigator){
 navigator.serviceWorker.register("sw.js")
 }
-
