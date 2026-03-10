@@ -89,3 +89,23 @@ display:block;
 text-decoration:line-through;
 opacity:0.6;
 }
+.pip-btn{
+
+position:fixed;
+bottom:20px;
+left:20px;
+
+padding:10px 16px;
+
+border:none;
+border-radius:30px;
+
+background:var(--accent);
+color:white;
+
+cursor:pointer;
+
+z-index:1000;
+
+}
+
