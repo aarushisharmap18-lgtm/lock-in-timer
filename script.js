@@ -136,14 +136,31 @@ document.getElementById("addTodo").onclick=()=>{
 let text=document.getElementById("todoText").value
 if(!text) return
 
-let li=document.createElement("li")
+let li = document.createElement("li")
 
-let box=document.createElement("input")
-box.type="checkbox"
+let box = document.createElement("input")
+box.type = "checkbox"
 
-let span=document.createElement("span")
-span.textContent=text
+let span = document.createElement("span")
+span.textContent = text
 
+let del = document.createElement("button")
+del.textContent = "✖"
+del.className = "delete"
+
+box.onchange = () => {
+span.classList.toggle("completed")
+}
+
+del.onclick = () => {
+li.remove()
+}
+
+li.appendChild(box)
+li.appendChild(span)
+li.appendChild(del)
+
+list.appendChild(li)
 box.onchange=()=>{
 span.classList.toggle("completed")
 }
@@ -203,3 +220,4 @@ document.exitPictureInPicture()
 if("serviceWorker" in navigator){
 navigator.serviceWorker.register("sw.js")
 }
+
