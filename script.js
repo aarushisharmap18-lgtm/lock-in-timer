@@ -1,3 +1,5 @@
+/* TIMER VARIABLES */
+
 let focusTime = 1500
 let breakTime = 300
 
@@ -10,9 +12,13 @@ const bell = new Audio("bell.mpeg")
 const timeDisplay = document.getElementById("time")
 const circle = document.querySelector(".progress-ring-circle")
 
+/* SESSION COUNTER */
+
 let sessionCount = localStorage.getItem("sessions") || 0
 const sessionDisplay = document.getElementById("sessionCount")
 sessionDisplay.textContent = sessionCount
+
+/* PROGRESS RING SETUP */
 
 const radius = 100
 const circumference = 2 * Math.PI * radius
@@ -23,6 +29,8 @@ circle.style.strokeDashoffset = circumference
 function setProgress(percent){
 circle.style.strokeDashoffset = circumference - percent * circumference
 }
+
+/* UPDATE TIMER DISPLAY */
 
 function updateTimer(){
 
@@ -37,7 +45,7 @@ setProgress(1 - time/total)
 
 }
 
-/* TIMER */
+/* START TIMER */
 
 function startTimer(){
 
@@ -48,27 +56,27 @@ interval = setInterval(()=>{
 time--
 updateTimer()
 
-if(time<=0){
+if(time <= 0){
 
-bell.currentTime=0
+bell.currentTime = 0
 bell.play().catch(()=>{})
 
 clearInterval(interval)
-interval=null
+interval = null
 
-if(mode==="focus"){
+if(mode === "focus"){
 
 sessionCount++
-localStorage.setItem("sessions",sessionCount)
-sessionDisplay.textContent=sessionCount
+localStorage.setItem("sessions", sessionCount)
+sessionDisplay.textContent = sessionCount
 
-mode="break"
-time=breakTime
+mode = "break"
+time = breakTime
 
 }else{
 
-mode="focus"
-time=focusTime
+mode = "focus"
+time = focusTime
 
 }
 
@@ -80,44 +88,51 @@ updateTimer()
 
 }
 
-document.getElementById("start").onclick=startTimer
+/* BUTTON CONTROLS */
 
-document.getElementById("pause").onclick=()=>{
+document.getElementById("start").onclick = startTimer
+
+document.getElementById("pause").onclick = ()=>{
 clearInterval(interval)
-interval=null
+interval = null
 }
 
-document.getElementById("reset").onclick=()=>{
+document.getElementById("reset").onclick = ()=>{
 clearInterval(interval)
-interval=null
-mode="focus"
-time=focusTime
+interval = null
+mode = "focus"
+time = focusTime
 updateTimer()
 }
 
-document.getElementById("break").onclick=()=>{
+document.getElementById("break").onclick = ()=>{
 clearInterval(interval)
-interval=null
-mode="break"
-time=breakTime
+interval = null
+mode = "break"
+time = breakTime
 updateTimer()
 }
 
-document.getElementById("setTimes").onclick=()=>{
+/* CUSTOM TIMES */
 
-let f=document.getElementById("focusInput").value
-let b=document.getElementById("breakInput").value
+document.getElementById("setTimes").onclick = ()=>{
 
-if(f>0) focusTime=f*60
-if(b>0) breakTime=b*60
+let f = document.getElementById("focusInput").value
+let b = document.getElementById("breakInput").value
 
-mode="focus"
-time=focusTime
+if(f > 0) focusTime = f * 60
+if(b > 0) breakTime = b * 60
+
+mode = "focus"
+time = focusTime
+
 updateTimer()
 
 }
 
-document.getElementById("mode").onclick=()=>{
+/* DARK MODE */
+
+document.getElementById("mode").onclick = ()=>{
 document.body.classList.toggle("dark")
 }
 
@@ -125,35 +140,35 @@ updateTimer()
 
 /* TODO LIST */
 
-const panel=document.getElementById("todoPanel")
-const list=document.getElementById("todoList")
+const panel = document.getElementById("todoPanel")
+const list = document.getElementById("todoList")
 
-document.getElementById("todoToggle").onclick=()=>{
+document.getElementById("todoToggle").onclick = ()=>{
 panel.classList.toggle("open")
 }
 
-document.getElementById("addTodo").onclick=()=>{
+document.getElementById("addTodo").onclick = ()=>{
 
-let text=document.getElementById("todoText").value
+let text = document.getElementById("todoText").value
 if(!text) return
 
-let li=document.createElement("li")
+let li = document.createElement("li")
 
-let box=document.createElement("input")
-box.type="checkbox"
+let box = document.createElement("input")
+box.type = "checkbox"
 
-let span=document.createElement("span")
-span.textContent=text
+let span = document.createElement("span")
+span.textContent = text
 
-let del=document.createElement("button")
-del.textContent="✖"
-del.className="delete"
+let del = document.createElement("button")
+del.textContent = "✖"
+del.className = "delete"
 
-box.onchange=()=>{
+box.onchange = ()=>{
 span.classList.toggle("completed")
 }
 
-del.onclick=()=>{
+del.onclick = ()=>{
 li.remove()
 }
 
@@ -163,11 +178,11 @@ li.appendChild(del)
 
 list.appendChild(li)
 
-document.getElementById("todoText").value=""
+document.getElementById("todoText").value = ""
 
 }
 
-/* FLOATING TIMER WITH CONTROLS */
+/* FLOATING TIMER WINDOW (PIP STYLE) */
 
 let pipWindow = null
 
@@ -205,7 +220,7 @@ timerText.innerText = timeDisplay.textContent
 
 doc.body.appendChild(timerText)
 
-/* BUTTON CONTAINER */
+/* CONTROLS */
 
 const controls = doc.createElement("div")
 controls.style.display="flex"
@@ -217,8 +232,9 @@ doc.body.appendChild(controls)
 
 const startBtn = doc.createElement("button")
 startBtn.innerText = "Start"
+startBtn.style.padding="6px 10px"
 
-startBtn.onclick = () => {
+startBtn.onclick = ()=>{
 startTimer()
 }
 
@@ -228,15 +244,16 @@ controls.appendChild(startBtn)
 
 const pauseBtn = doc.createElement("button")
 pauseBtn.innerText = "Pause"
+pauseBtn.style.padding="6px 10px"
 
-pauseBtn.onclick = () => {
+pauseBtn.onclick = ()=>{
 clearInterval(interval)
 interval = null
 }
 
 controls.appendChild(pauseBtn)
 
-/* UPDATE TIMER DISPLAY */
+/* LIVE TIMER UPDATE */
 
 setInterval(()=>{
 
@@ -253,4 +270,3 @@ timerText.innerText = timeDisplay.textContent
 if("serviceWorker" in navigator){
 navigator.serviceWorker.register("sw.js")
 }
-
