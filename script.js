@@ -1,14 +1,17 @@
 let focusTime = 1500
 let breakTime = 300
-
 let time = focusTime
-let interval = null
 let mode = "focus"
+let interval = null
 
-const bell = new Audio("bell.mp3")
+const bell = new Audio("bell.mpeg")
 
 const timeDisplay = document.getElementById("time")
 const circle = document.querySelector(".progress-ring-circle")
+
+let sessionCount = localStorage.getItem("sessions") || 0
+const sessionDisplay = document.getElementById("sessionCount")
+sessionDisplay.textContent = sessionCount
 
 const radius = 100
 const circumference = 2 * Math.PI * radius
@@ -31,8 +34,7 @@ timeDisplay.textContent =
 
 let total = mode === "focus" ? focusTime : breakTime
 
-let progress = 1 - time/total
-setProgress(progress)
+setProgress(1 - time/total)
 
 }
 
@@ -45,21 +47,28 @@ interval = setInterval(()=>{
 time--
 updateTimer()
 
-if(time <= 0){
+if(time<=0){
 
-bell.play()
+bell.currentTime=0
+bell.play().catch(()=>{})
 
 clearInterval(interval)
-interval = null
+interval=null
 
-if(mode === "focus"){
-mode = "break"
-time = breakTime
-alert("Break time!")
+if(mode==="focus"){
+
+sessionCount++
+localStorage.setItem("sessions",sessionCount)
+sessionDisplay.textContent=sessionCount
+
+mode="break"
+time=breakTime
+
 }else{
-mode = "focus"
-time = focusTime
-alert("Focus time!")
+
+mode="focus"
+time=focusTime
+
 }
 
 updateTimer()
@@ -70,38 +79,36 @@ updateTimer()
 
 }
 
-document.getElementById("start").onclick = startTimer
+document.getElementById("start").onclick=startTimer
 
-document.getElementById("pause").onclick = ()=>{
+document.getElementById("pause").onclick=()=>{
 clearInterval(interval)
-interval = null
+interval=null
 }
 
-document.getElementById("reset").onclick = ()=>{
+document.getElementById("reset").onclick=()=>{
 clearInterval(interval)
-interval = null
-mode = "focus"
-time = focusTime
+interval=null
+mode="focus"
+time=focusTime
 updateTimer()
-setProgress(0)
 }
 
-document.getElementById("break").onclick = ()=>{
+document.getElementById("break").onclick=()=>{
 clearInterval(interval)
-interval = null
-mode = "break"
-time = breakTime
+interval=null
+mode="break"
+time=breakTime
 updateTimer()
-setProgress(0)
 }
 
-document.getElementById("setTimes").onclick = ()=>{
+document.getElementById("setTimes").onclick=()=>{
 
-let f = document.getElementById("focusInput").value
-let b = document.getElementById("breakInput").value
+let f=document.getElementById("focusInput").value
+let b=document.getElementById("breakInput").value
 
-if(f>0) focusTime = f*60
-if(b>0) breakTime = b*60
+if(f>0) focusTime=f*60
+if(b>0) breakTime=b*60
 
 mode="focus"
 time=focusTime
@@ -109,7 +116,7 @@ updateTimer()
 
 }
 
-document.getElementById("mode").onclick = ()=>{
+document.getElementById("mode").onclick=()=>{
 document.body.classList.toggle("dark")
 }
 
@@ -117,29 +124,28 @@ updateTimer()
 
 /* TODO LIST */
 
-const panel = document.getElementById("todoPanel")
-const list = document.getElementById("todoList")
+const panel=document.getElementById("todoPanel")
+const list=document.getElementById("todoList")
 
-document.getElementById("todoToggle").onclick = ()=>{
+document.getElementById("todoToggle").onclick=()=>{
 panel.classList.toggle("open")
 }
 
-document.getElementById("addTodo").onclick = ()=>{
+document.getElementById("addTodo").onclick=()=>{
 
-let text = document.getElementById("todoText").value
+let text=document.getElementById("todoText").value
 if(!text) return
 
-let li = document.createElement("li")
+let li=document.createElement("li")
 
-let box = document.createElement("input")
+let box=document.createElement("input")
 box.type="checkbox"
 
-let span = document.createElement("span")
+let span=document.createElement("span")
 span.textContent=text
 
 box.onchange=()=>{
 span.classList.toggle("completed")
-saveTodos()
 }
 
 li.appendChild(box)
@@ -149,61 +155,48 @@ list.appendChild(li)
 
 document.getElementById("todoText").value=""
 
-saveTodos()
+}
+
+/* PICTURE IN PICTURE */
+
+document.getElementById("pip").onclick=async()=>{
+
+if(!document.pictureInPictureElement){
+
+const canvas=document.createElement("canvas")
+canvas.width=200
+canvas.height=100
+
+const ctx=canvas.getContext("2d")
+
+setInterval(()=>{
+
+ctx.fillStyle="#111"
+ctx.fillRect(0,0,200,100)
+
+ctx.fillStyle="#fff"
+ctx.font="30px sans-serif"
+ctx.textAlign="center"
+
+ctx.fillText(timeDisplay.textContent,100,60)
+
+},1000)
+
+const stream=canvas.captureStream()
+
+const video=document.createElement("video")
+video.srcObject=stream
+video.play()
+
+await video.requestPictureInPicture()
+
+}else{
+
+document.exitPictureInPicture()
 
 }
 
-/* SAVE TODOS */
-
-function saveTodos(){
-
-let todos=[]
-
-document.querySelectorAll("#todoList li").forEach(li=>{
-todos.push({
-text:li.children[1].textContent,
-done:li.children[0].checked
-})
-})
-
-localStorage.setItem("todos",JSON.stringify(todos))
-
 }
-
-/* LOAD TODOS */
-
-function loadTodos(){
-
-let todos=JSON.parse(localStorage.getItem("todos"))||[]
-
-todos.forEach(t=>{
-
-let li=document.createElement("li")
-
-let box=document.createElement("input")
-box.type="checkbox"
-box.checked=t.done
-
-let span=document.createElement("span")
-span.textContent=t.text
-
-if(t.done) span.classList.add("completed")
-
-box.onchange=()=>{
-span.classList.toggle("completed")
-saveTodos()
-}
-
-li.appendChild(box)
-li.appendChild(span)
-
-list.appendChild(li)
-
-})
-
-}
-
-loadTodos()
 
 /* SERVICE WORKER */
 
