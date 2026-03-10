@@ -1,7 +1,7 @@
-self.addEventListener("install", event => {
+self.addEventListener("install", e => {
 self.skipWaiting()
 })
 
-self.addEventListener("fetch", event => {
-event.respondWith(fetch(event.request))
+self.addEventListener("fetch", e => {
+e.respondWith(fetch(e.request))
 })
