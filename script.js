@@ -174,50 +174,47 @@ document.getElementById("todoText").value=""
 
 }
 
-/* PICTURE IN PICTURE */
+/* WORKING PICTURE IN PICTURE */
 
-document.getElementById("pip").onclick=async()=>{
+const pipButton = document.getElementById("pip")
 
-if(!document.pictureInPictureElement){
+let pipWindow = null
 
-const canvas=document.createElement("canvas")
-canvas.width=200
-canvas.height=100
+pipButton.onclick = async () => {
 
-const ctx=canvas.getContext("2d")
+if (!("documentPictureInPicture" in window)) {
+alert("Picture-in-Picture not supported in this browser")
+return
+}
+
+if (pipWindow) {
+pipWindow.close()
+pipWindow = null
+return
+}
+
+pipWindow = await window.documentPictureInPicture.requestWindow({
+width:200,
+height:120
+})
+
+const pipTimer = pipWindow.document.createElement("div")
+
+pipTimer.style.display = "flex"
+pipTimer.style.alignItems = "center"
+pipTimer.style.justifyContent = "center"
+pipTimer.style.height = "100%"
+pipTimer.style.fontSize = "32px"
+pipTimer.style.fontFamily = "sans-serif"
+
+pipTimer.textContent = timeDisplay.textContent
+
+pipWindow.document.body.appendChild(pipTimer)
 
 setInterval(()=>{
-
-ctx.fillStyle="#111"
-ctx.fillRect(0,0,200,100)
-
-ctx.fillStyle="#fff"
-ctx.font="30px sans-serif"
-ctx.textAlign="center"
-
-ctx.fillText(timeDisplay.textContent,100,60)
-
-},1000)
-
-const stream=canvas.captureStream()
-
-const video=document.createElement("video")
-video.srcObject=stream
-video.play()
-
-await video.requestPictureInPicture()
-
-}else{
-
-document.exitPictureInPicture()
+if(pipWindow){
+pipTimer.textContent = timeDisplay.textContent
+}
+},500)
 
 }
-
-}
-
-/* SERVICE WORKER */
-
-if("serviceWorker" in navigator){
-navigator.serviceWorker.register("sw.js")
-}
-
