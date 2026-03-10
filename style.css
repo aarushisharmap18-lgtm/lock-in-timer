@@ -19,24 +19,18 @@ justify-content:center;
 align-items:center;
 height:100vh;
 margin:0;
-transition:0.3s;
 }
 
 .container{
 text-align:center;
 }
 
-.custom-times{
-margin-bottom:20px;
-}
-
-.custom-times input{
-width:100px;
-padding:8px;
-margin:4px;
-border-radius:10px;
-border:1px solid #ccc;
-text-align:center;
+.session-box{
+position:absolute;
+top:20px;
+right:25px;
+font-size:14px;
+opacity:0.8;
 }
 
 .timer{
@@ -82,47 +76,13 @@ color:white;
 cursor:pointer;
 }
 
-button:hover{
-transform:scale(1.05);
-}
-
-/* TODO PANEL */
-
 .todo-panel{
 display:none;
 margin-top:20px;
-width:250px;
-margin-left:auto;
-margin-right:auto;
 }
 
 .todo-panel.open{
 display:block;
-}
-
-.todo-input{
-display:flex;
-gap:5px;
-margin-bottom:10px;
-}
-
-.todo-input input{
-flex:1;
-padding:6px;
-border-radius:8px;
-border:1px solid #ccc;
-}
-
-ul{
-list-style:none;
-padding:0;
-}
-
-li{
-display:flex;
-align-items:center;
-gap:8px;
-margin:6px 0;
 }
 
 .completed{
