@@ -167,7 +167,7 @@ document.getElementById("todoText").value=""
 
 }
 
-/* WORKING FLOATING TIMER (PIP STYLE) */
+/* FLOATING TIMER WITH CONTROLS */
 
 let pipWindow = null
 
@@ -175,32 +175,75 @@ document.getElementById("pip").onclick = () => {
 
 if(pipWindow && !pipWindow.closed){
 pipWindow.close()
-pipWindow=null
+pipWindow = null
 return
 }
 
 pipWindow = window.open(
 "",
 "Timer",
-"width=200,height=120,alwaysRaised=yes"
+"width=220,height=160"
 )
 
-pipWindow.document.body.style.margin="0"
-pipWindow.document.body.style.display="flex"
-pipWindow.document.body.style.alignItems="center"
-pipWindow.document.body.style.justifyContent="center"
-pipWindow.document.body.style.fontSize="30px"
-pipWindow.document.body.style.fontFamily="sans-serif"
+const doc = pipWindow.document
 
-const timerText = pipWindow.document.createElement("div")
+doc.body.style.margin="0"
+doc.body.style.display="flex"
+doc.body.style.flexDirection="column"
+doc.body.style.alignItems="center"
+doc.body.style.justifyContent="center"
+doc.body.style.fontFamily="sans-serif"
+doc.body.style.background="#111"
+doc.body.style.color="#fff"
+
+/* TIMER TEXT */
+
+const timerText = doc.createElement("div")
+timerText.style.fontSize="32px"
+timerText.style.marginBottom="10px"
 timerText.innerText = timeDisplay.textContent
 
-pipWindow.document.body.appendChild(timerText)
+doc.body.appendChild(timerText)
+
+/* BUTTON CONTAINER */
+
+const controls = doc.createElement("div")
+controls.style.display="flex"
+controls.style.gap="10px"
+
+doc.body.appendChild(controls)
+
+/* START BUTTON */
+
+const startBtn = doc.createElement("button")
+startBtn.innerText = "Start"
+
+startBtn.onclick = () => {
+startTimer()
+}
+
+controls.appendChild(startBtn)
+
+/* PAUSE BUTTON */
+
+const pauseBtn = doc.createElement("button")
+pauseBtn.innerText = "Pause"
+
+pauseBtn.onclick = () => {
+clearInterval(interval)
+interval = null
+}
+
+controls.appendChild(pauseBtn)
+
+/* UPDATE TIMER DISPLAY */
 
 setInterval(()=>{
+
 if(pipWindow && !pipWindow.closed){
 timerText.innerText = timeDisplay.textContent
 }
+
 },500)
 
 }
@@ -210,3 +253,4 @@ timerText.innerText = timeDisplay.textContent
 if("serviceWorker" in navigator){
 navigator.serviceWorker.register("sw.js")
 }
+
